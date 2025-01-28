@@ -1,0 +1,67 @@
+// In this Assignment, I made get,post,delete for the routes/user.js 
+// I defined the types of the columns in the models/user.js
+// I ran command for the updated migration.
+
+
+9:30 PM 27/01/2025
+I made Validation Folder and Added Validations file for users.js and auth.js in it.
+
+// When I am getting something from my folders then I am using 
+const something = require('./something);
+
+// and when I want something from the modules then I do it
+const {something} = require('./something);
+
+// Making a gitignore file and adding node_modules
+
+// I made authControllers in the controllers/authControllers.js file
+// Then I implemented it in the routes/auth.js
+
+// We can make the code proper by separating the controllers and then implementing it in the routes files.
+
+
+// I changed the columns in my db so I did this.
+npx sequelize-cli migration:generate --name update-table-name
+
+// then I did this.
+
+I have now a file named as 20250128065430-update-table-name in my migrations folder.
+
+I made changes bcz I have changed my columns to id,username,email,password and etc and remove the previous columns.
+I did changes with the help of chatgpt
+
+// then I ran this command to apply migration
+npx sequelize-cli db:migrate
+
+
+// New module which I Added
+
+npm install bcrypt
+npm install bcryptjs
+npm install jsonwebtoken
+npm install nodemailer
+
+// I had a mistake like this 
+const {User} = require('../models/user');
+
+// and I corrected it like this
+const User = require('../models/user');
+
+//
+npm install dotenv
+
+// created .env file at the root.
+// added JWT_SECRET in it
+
+// adding in app.js -> require('dotenv').config();
+
+// I added .env into .gitignore
+
+// I used jwt for signUp and signIn in auth.js
+
+// I wrote it in the app.js file
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
+// I did this in .env file
+EMAIL_USER=xain.graphics69@gmail.com
+EMAIL_PASS=********
