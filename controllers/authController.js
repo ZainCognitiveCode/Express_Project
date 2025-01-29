@@ -5,38 +5,19 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { Sequelize } = require('sequelize');
 
-// Middleware to verify JWT
-const authenticateToken = (req, res, next) => {
-    // 1. Retrieve the token from the Authorization header
-    const token = req.headers['authorization'];
-
-    // 2. If no token is provided, return a 401 (Unauthorized) response
-    if (!token) return res.status(401).send('Access Denied. No token provided.');
-
-    // 3. Extract the token from the 'Bearer <token>' format and verify it
-    jwt.verify(token.split(' ')[1], process.env.JWT_SECRET, (err, decoded) => {
-        // If the token is invalid or expired, return a 403 (Forbidden) response
-        if (err) return res.status(403).send('Invalid or expired token.');
-
-        // If the token is valid, attach the decoded payload to the request object
-        req.user = decoded;
-
-        // Pass control to the next middleware or route handler
-        next();
-    });
-};
 
 
 // SignUp
 signUp = async(req,res)=>{
     try {
-        const {username, email, password} = req.body;
+        const {firstName,lastName,username, email, password} = req.body;
 
         const userExist = await User.findOne({where : {email}});
         if(userExist) return res.status(400).send("User already Exists");
 
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const user = await User.create({username,email, password: hashedPassword});
+        const user = await User.create({firstName,lastName,username,email, password: hashedPassword});
+        console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).send({ message: 'User registered successfully!',token });

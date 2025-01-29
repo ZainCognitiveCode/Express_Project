@@ -65,3 +65,27 @@ console.log("JWT_SECRET:", process.env.JWT_SECRET);
 // I did this in .env file
 EMAIL_USER=xain.graphics69@gmail.com
 EMAIL_PASS=********
+
+
+// We do not need to use authenticateToken for auth.js bcz these routes are publicly accessible to the user. 
+// We will use authenticateToken on users.js routes.
+
+// I have made middleware in the middleware folder as authMiddleware.js
+// Then I use it in the app.js as app.use('/users',authenticateToken,usersRouter);
+
+// We can generate jwt_secret like this
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
+
+// then I pasted jwt_token generated  into .env file on JWT_SECRET
+442b647e6667d34ff2e7f340d1602ffb96cefa0a36987a2f0209c4ca18cf1cd6ffd895cdf16bde47814cb70e3e9d763e0bd21643637d653ad9988ac8dc9a45f9
+
+// And when I signup, it also gives me a token which I will need to verify the user.
+// I used the generated token after signup into authorization headers when I want to delete the user,update it, I can do it
+now only by providing the token only. I am doing it now with users.js routes. 
+
+// I added again firstName and lastName Columns now in the db again and updated my migration.
+
+
+// AT 12.42AM 29/01/2025
+I added a new route into my users.js route.
+// I made changes in the Validations of both auth and users routes.

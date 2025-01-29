@@ -6,7 +6,7 @@ function customLogger(req, res, next) {
     }).format(new Date());
 
     console.log(`[${currentDate}] ${req.method} ${req.originalUrl}`);
-    console.log('Zain');
+    console.log('Zain is working here....');
     next();
 }
 

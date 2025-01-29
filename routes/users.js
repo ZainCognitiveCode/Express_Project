@@ -6,8 +6,8 @@ const { validationResult } = require('express-validator');
 
 // Get Request
 
-router.get('/', async function (req,res){
-  const {id} = req.query;
+router.get('getUsers/:id', async function (req,res){
+  const {id} = req.params;
 
   try {
     let users;
@@ -29,6 +29,47 @@ router.get('/', async function (req,res){
   }
 })
 
+// Getting only userName and email by Light Weight JSON
+router.get('/getUserData/:id?', async function (req, res) {
+  const { id } = req.params;
+
+  try {
+    // Validate the ID if provided
+    if (id && isNaN(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid user ID' });
+    }
+
+    let users;
+
+    if (id) {
+      // Fetch a specific user by ID
+      users = await User.findByPk(id, {
+        attributes: ['username', 'email'],
+      });
+
+      if (!users) {
+        return res.status(404).json({ success: false, message: `User with ID ${id} not found` });
+      }
+    } else {
+      // Fetch all users
+      
+      users = await User.findAll({
+        attributes: ['username', 'email'],
+      });
+     
+    }
+
+    res.status(200).json({ users });
+    console.log('Response:', { users });    
+  } catch (error) {
+    console.error('Error fetching user data:', error.message);
+    res.status(500).json({ success: false, message: 'Error fetching user data', error: error.message });
+  }
+});
+
+
+
+
 
 // Post Request for creating a User
 
@@ -39,8 +80,8 @@ router.post('/',validateUser,async function (req,res){
     return req.status(400).json({errors: errors.array()});
   }
 
-  const {username,email, password} = req.body;
-  const newUser = await User.create({username,email,password});
+  const {firstName,lastName,username,email, password} = req.body;
+  const newUser = await User.create({firstName,lastName,username,email,password});
 
   res.send('User added Successfully...');
   // when we simple want to print the message.
@@ -52,7 +93,7 @@ router.post('/',validateUser,async function (req,res){
 
 router.put('/:id', async(req,res)=>{
   const {id} = req.params;
-  const{ username, email} = req.body;
+  const{ firstName,lastName,username, email} = req.body;
 
   try {
     const user = await User.findByPk(id);
@@ -62,7 +103,7 @@ router.put('/:id', async(req,res)=>{
     }
 
     await user.update({
-      username: username || user.username, email: email || user.email
+      username: username || user.username, email: email || user.email, firstName: firstName || user.firstName, lastName: lastName || user.lastName
     });
 
     res.status(200).json({message: `User Updated Successfully`,user});

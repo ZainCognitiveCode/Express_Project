@@ -5,8 +5,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 // var logger = require('morgan');
 var sequelize = require('./config/database');
-var customLogger = require('./logger');
-
+var customLogger = require('./middleware/logger');
+const authenticateToken = require('./middleware/authMiddleware');
 const port = 3000;
 
 var authRouter = require('./routes/auth');
@@ -36,9 +36,10 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
+
 app.use('/auth',authRouter);
 // app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users',authenticateToken,usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,10 +57,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+// Checking JWT
+// console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 app.listen(port, () => {
-  console.log(` App is running on port ${port}`)
+  console.log(` App is running on port ${port}...`)
 })
 
 module.exports = app;
