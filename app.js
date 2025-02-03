@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+const mongoose = require('mongoose');
 require('dotenv').config();
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -9,6 +10,8 @@ var customLogger = require('./middleware/logger');
 const authenticateToken = require('./middleware/authMiddleware');
 const port = 3000;
 
+var postRoutes = require('./routes/posts');
+var commentRoutes = require('./routes/comments');
 var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -36,10 +39,19 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
+// Connection to MongoDB
+mongoose.connect('mongodb+srv://xaingraphics69:N6xlLLCzAwOBieKQ@cluster0.yh4fp.mongodb.net/')
+    .then(()=> console.log('MongoDB is Connected Successfully... '))
+    .catch(()=> console.log('Error while connecting to MongoDB... '));
 
+
+
+
+app.use('/', indexRouter);
 app.use('/auth',authRouter);
-// app.use('/', indexRouter);
 app.use('/users',authenticateToken,usersRouter);
+app.use('/posts',postRoutes);
+app.use('/comments',commentRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

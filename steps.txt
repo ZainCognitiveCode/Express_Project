@@ -39,7 +39,6 @@ npx sequelize-cli db:migrate
 npm install bcrypt
 npm install bcryptjs
 npm install jsonwebtoken
-npm install nodemailer
 
 // I had a mistake like this 
 const {User} = require('../models/user');
@@ -89,3 +88,17 @@ now only by providing the token only. I am doing it now with users.js routes.
 // AT 12.42AM 29/01/2025
 I added a new route into my users.js route.
 // I made changes in the Validations of both auth and users routes.
+
+// I installed mongoose.
+// I made account on MongoDB and connected it to the mongodb Atlas.
+
+//  "type": "commonjs", in package.json
+
+// I made connection in app.js file with mongoose.
+
+// Feb 02/2025
+
+// I used resend email for sending mails but due to unverified domain, I can't send mail yet.
+
+// I added Comments and post section in this.
+// I also added pagination to the comments.

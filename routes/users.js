@@ -69,8 +69,6 @@ router.get('/getUserData/:id?', async function (req, res) {
 
 
 
-
-
 // Post Request for creating a User
 
 router.post('/',validateUser,async function (req,res){
@@ -83,7 +81,7 @@ router.post('/',validateUser,async function (req,res){
   const {firstName,lastName,username,email, password} = req.body;
   const newUser = await User.create({firstName,lastName,username,email,password});
 
-  res.send('User added Successfully...');
+  res.send('User added Successfully...',newUser);
   // when we simple want to print the message.
 
 })
