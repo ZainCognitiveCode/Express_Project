@@ -1,6 +1,41 @@
-// In this Assignment, I made get,post,delete for the routes/user.js 
+npx express-generator
+npm install
+npm start
+
+// In your browser to access the app.
+http://localhost:3000/
+
+// use ORM(Object Relation Method), sequelize
+
+npm install --save sequelize
+npm install --save mysql2
+
+npm install --save-dev sequelize-cli
+npx sequelize-cli init
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
+npx sequelize-cli db:migrate
+
+
+// if you have changed the databasename into config.json file then do it
+npx sequelize-cli db:create
+// This will create the db into mysql 
+
+// Making Apis of auth
+
+// Applying validation through Express-validator
+
+// Making a middleware as logger.js and using it in the users.js 
+
+// writing password of mysqlWorkbench in config.json file.
+
+// making config/database.js file and then copying data into it.
+
+// exporting database.js as sequelize and using in db/sql.js
+
+
+I made get,post,delete for the routes/user.js 
 // I defined the types of the columns in the models/user.js
-// I ran command for the updated migration.
+// I ran command for the updated migration. -> npx sequelize-cli db:migrate
 
 
 9:30 PM 27/01/2025
@@ -17,18 +52,14 @@ const {something} = require('./something);
 // I made authControllers in the controllers/authControllers.js file
 // Then I implemented it in the routes/auth.js
 
-// We can make the code proper by separating the controllers and then implementing it in the routes files.
-
 
 // I changed the columns in my db so I did this.
 npx sequelize-cli migration:generate --name update-table-name
 
-// then I did this.
 
 I have now a file named as 20250128065430-update-table-name in my migrations folder.
 
 I made changes bcz I have changed my columns to id,username,email,password and etc and remove the previous columns.
-I did changes with the help of chatgpt
 
 // then I ran this command to apply migration
 npx sequelize-cli db:migrate
@@ -39,6 +70,7 @@ npx sequelize-cli db:migrate
 npm install bcrypt
 npm install bcryptjs
 npm install jsonwebtoken
+npm install dotenv
 
 // I had a mistake like this 
 const {User} = require('../models/user');
@@ -46,8 +78,6 @@ const {User} = require('../models/user');
 // and I corrected it like this
 const User = require('../models/user');
 
-//
-npm install dotenv
 
 // created .env file at the root.
 // added JWT_SECRET in it
@@ -76,29 +106,36 @@ EMAIL_PASS=********
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
 
 // then I pasted jwt_token generated  into .env file on JWT_SECRET
-442b647e6667d34ff2e7f340d1602ffb96cefa0a36987a2f0209c4ca18cf1cd6ffd895cdf16bde47814cb70e3e9d763e0bd21643637d653ad9988ac8dc9a45f9
-
 // And when I signup, it also gives me a token which I will need to verify the user.
 // I used the generated token after signup into authorization headers when I want to delete the user,update it, I can do it
 now only by providing the token only. I am doing it now with users.js routes. 
 
 // I added again firstName and lastName Columns now in the db again and updated my migration.
 
-
-// AT 12.42AM 29/01/2025
-I added a new route into my users.js route.
-// I made changes in the Validations of both auth and users routes.
+Jan 29/2025
+// AT 12.42AM
 
 // I installed mongoose.
 // I made account on MongoDB and connected it to the mongodb Atlas.
 
 //  "type": "commonjs", in package.json
 
-// I made connection in app.js file with mongoose.
+// I made connection in db/mongo.js file with mongoose.
 
 // Feb 02/2025
 
-// I used resend email for sending mails but due to unverified domain, I can't send mail yet.
+//I used Nodemailer for sending mails
 
-// I added Comments and post section in this.
+// I added Comments and post section in the routes
 // I also added pagination to the comments.
+
+
+
+Feb 03/2025 
+// Updated my code.
+// Made db folder and made the connections separate into this folder.
+// Improved my Code Readability by making Controller of User,comment,posts and then adding validation on them.
+
+
+// pm2 package or cluster from nodejs
+// change the promiseAll function

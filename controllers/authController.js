@@ -1,14 +1,27 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { Resend } = require('resend'); // Ensure Resend is correctly imported
+const nodemailer = require('nodemailer');
 const dotenv = require('dotenv'); // Correct dotenv import
 const crypto = require('crypto');
 const { Sequelize } = require('sequelize');
 
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465, // or try 587
+    secure: true, // true for port 465, false for port 587
+    auth: {
+        user: "xain.graphics69@gmail.com",
+        pass: "ouar ooue hkpu icin" // Use App Password if 2FA is enabled
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+  
 
 // SignUp
 signUp = async (req, res) => {
@@ -68,15 +81,16 @@ const forgotPassword = async (req, res) => {
         await user.update({ resetPasswordToken: token, resetPasswordExpires: expiry });
 
         const resetLink = `http://localhost:3000/reset/${token}`;
-
-        const emailData = await resend.emails.send({
-            from: 'no-reply@resend.email', // Ensure your domain is verified in Resend
+        const mailOptions = {
+            from: process.env.EMAIL_USER, // Sender email
             to: email,
+           
             subject: 'Password Reset',
-            html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`,
-        });
+            html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
+        };
 
-        console.log(emailData);
+        await transporter.sendMail(mailOptions);
+
         res.status(200).send('Password reset email sent!');
 
     } catch (error) {
