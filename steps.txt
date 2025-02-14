@@ -33,7 +33,7 @@ npx sequelize-cli db:create
 // exporting database.js as sequelize and using in db/sql.js
 
 
-I made get,post,delete for the routes/user.js 
+I made get,post,delete,put for the routes/user.js 
 // I defined the types of the columns in the models/user.js
 // I ran command for the updated migration. -> npx sequelize-cli db:migrate
 
@@ -137,5 +137,23 @@ Feb 03/2025
 // Improved my Code Readability by making Controller of User,comment,posts and then adding validation on them.
 
 
-// pm2 package or cluster from nodejs
-// change the promiseAll function
+Feb 13/2025
+I made usermiddleware to get the user id and then used it in the users.js route.
+// By learning from the Udemy Course, I am applying that here too.
+
+// Made a comment in app.js file as 
+// for using or serving static files, we do this
+
+// Command for ESLINT and Prettier
+npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react --save-dev
+
+
+
+// Promise.allSettled -> if all the processes are successfull or failed, it will complete all of them and show the result either fail or successful
+// Promise.all -> if any of the proccess gets failed then it will exit and will not move forward.
+// Promise.any -> if any of the process is successfull then it will show the result 
+
+
+
+
+

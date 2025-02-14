@@ -5,10 +5,8 @@ const postController = require('../controllers/postController');
 const postValidator = require('../Validation/PostValidator')
 
 // API's
-router.get('/:postId?',postController.getPostData);
-router.post('/',postValidator,postController.createPost);
-router.put('/:postId',postController.updatePost);
-router.delete('/:postId',postController.deletePost);
+router.get('/:postId?',postController.getPostData).post('/',postValidator,postController.createPost).put('/:postId',postController.updatePost)
+.delete('/:postId',postController.deletePost);
 
 
 module.exports = router;

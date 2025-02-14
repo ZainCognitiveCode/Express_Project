@@ -4,10 +4,8 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const { signUpValidation,signInValidation,forgetPasswordValidation } = require('../Validation/Authvalidator');
 
-router.post('/signup',signUpValidation,authController.signUp);
-router.post('/signin',signInValidation,authController.logIn);
-router.post('/forgotpassword',forgetPasswordValidation,authController.forgotPassword);
-router.post('/resetpassword',authController.resetPassword);
+router.post('/signup',signUpValidation,authController.signUp).post('/signin',signInValidation,authController.logIn)
+.post('/forgotpassword',forgetPasswordValidation,authController.forgotPassword).post('/resetpassword',authController.resetPassword);
 
 module.exports = router;
 

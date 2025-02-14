@@ -8,18 +8,7 @@ const { Sequelize } = require('sequelize');
 
 dotenv.config();
 
-let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465, // or try 587
-    secure: true, // true for port 465, false for port 587
-    auth: {
-        user: "xain.graphics69@gmail.com",
-        pass: "ouar ooue hkpu icin" // Use App Password if 2FA is enabled
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+
 
   
 
@@ -80,13 +69,19 @@ const forgotPassword = async (req, res) => {
 
         await user.update({ resetPasswordToken: token, resetPasswordExpires: expiry });
 
-        const resetLink = `http://localhost:3000/reset/${token}`;
+        const transporter = nodemailer.createTransport({
+                  service: 'gmail',
+                  auth: {
+                    user: 'xain.graphics69@gmail.com', 
+                    pass: 'ouar ooue hkpu icin'  
+                  }
+                });
+            
+        const resetLink = `http://localhost:3000/resetpassword/${token}`;
         const mailOptions = {
-            from: process.env.EMAIL_USER, // Sender email
-            to: email,
-           
+            to: email,  
             subject: 'Password Reset',
-            html: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
+            text: `<p>Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`
         };
 
         await transporter.sendMail(mailOptions);
@@ -95,7 +90,7 @@ const forgotPassword = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).send("Error during password reset.");
+        res.status(500).send('Error in sending password reset email: ' + error.message);
     }
 };
 

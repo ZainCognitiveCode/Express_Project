@@ -62,16 +62,26 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findByPk(id);
 
-        if (!user) return res.status(404).json({ success: false, message: `User with ID ${id} not found` });
-
-        await user.destroy();
-        res.status(200).json({ success: true, message: `User with ID ${id} deleted successfully` });
+        if (id) {
+            // Delete a specific user by ID
+            const user = await User.findByPk(id);
+            if (!user) {
+                return res.status(404).json({ success: false, message: `User with ID ${id} not found` });
+            }
+            await user.destroy();
+            return res.status(200).json({ success: true, message: `User with ID ${id} deleted successfully` });
+        } else {
+            // Delete all users
+            await User.destroy({ where: {}, truncate: true });
+            return res.status(200).json({ success: true, message: 'All users deleted successfully' });
+        }
     } catch (error) {
-        console.error('Error deleting user:', error);
-        res.status(500).json({ success: false, message: 'Error deleting user', error: error.message });
+        console.error('Error deleting user(s):', error);
+        res.status(500).json({ success: false, message: 'Error deleting user(s)', error: error.message });
     }
 };
+
+
 
 module.exports = { getUserData, createUser, updateUser, deleteUser };
