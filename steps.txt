@@ -154,6 +154,9 @@ npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-confi
 // Promise.any -> if any of the process is successfull then it will show the result 
 
 
+Feb 14/2025
+I changed the mongodb connection by placing the db string in the env file.
+// Made Changes in the error in app.js so that it will look more useful
 
-
-
+// I made error custom class in utils/appError
+// I made errorController for app.js in controllers folder.

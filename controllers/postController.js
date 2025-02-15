@@ -31,6 +31,8 @@ const getPostData = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+
+
 }
 
 const createPost = async(req,res) =>{

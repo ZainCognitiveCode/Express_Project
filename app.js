@@ -3,10 +3,15 @@ const express = require('express');
 const connectToMongo = require('./db/mongo');
 const connectToSql = require('./db/sql');
 
+process.on('uncaughtException', err => {
+  console.log("Uncaught Exception! Shutting Down...");
+  console.log(err.name, err.message);
+  process.exit(1);
+})
+
 require('dotenv').config();
 const path = require('path');
 const app = express();
-const port = 3000;
 const cookieParser = require('cookie-parser');
 // const logger = require('morgan');
 
@@ -20,6 +25,8 @@ const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
+const appError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
 
 
 
@@ -31,13 +38,13 @@ app.use(cookieParser());
 
 // for using or serving static files, we do this
 app.use(express.static(path.join(__dirname, 'public')));
-// acces this url to check server rendering http://localhost:3000/images/863705.jpg
+// acces this url to check server static files rendering http://localhost:3000/images/863705.jpg
 app.use(customLogger);
 
 
 
 // Calling the Connections
-// connectToMongo();
+connectToMongo();
 connectToSql();
 
 
@@ -49,28 +56,35 @@ app.use('/posts',postRoutes);
 app.use('/comments',commentRoutes);
 
 
-// catch 404 and forward to error handler (Middleware)
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.all('*',(req,res,next)=>{
+  next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
+})
 
 
-app.listen(port, () => {
+
+// Error handler
+app.use(globalErrorHandler);
+
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => {
   console.log(` App is running on port ${port}...`)
 })
 
+process.on('unhandledRejection', err => {
+  console.log("Unhandle Rejection! Shutting Down...");
+  console.log(err.name, err.message);
+  server.close(()=>{
+  process.exit(1);
+  })
+})
+
+
+
+
+
 //checking the environment of app
 console.log(app.get('env'));
+
+
 
 module.exports = app;
